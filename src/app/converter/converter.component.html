@@ -1,0 +1,36 @@
+<form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)">
+
+    <div class="two fields">
+        <div suiFormField>
+            <label for="from">From:</label>
+            <sui-select id="from" suiPlaceholder="Select a currency" name="from" [suiOptions]="currencies" ngModel
+                [(ngModel)]="fromCurrency" required></sui-select>
+        </div>
+
+        <div suiFormField>
+            <label for="to">To:</label>
+            <sui-select id="to" suiPlaceholder="Select a currency" name="to" [suiOptions]="currencies" ngModel
+                [(ngModel)]="toCurrency" required></sui-select>
+        </div>
+    </div>
+
+    <div suiFormField>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" [(ngModel)]="amount" name="amount" required min="0"
+            placeholder="Enter amount" />
+    </div>
+
+    <button sui-button suiEmphasis="primary" (click)="convert(currencyForm)">Convert</button>
+    <div *ngIf="loading" class="ui active inline loader"></div>
+</form>
+
+
+<div *ngIf="convertedAmount" class="ui positive message">
+    <div class="header">Conversion Result</div>
+    <p>{{ convertedAmount }}</p>
+</div>
+
+<div *ngIf="errorMessage" class="ui negative message">
+    <div class="header">Error</div>
+    <p>{{ errorMessage }}</p>
+</div>
