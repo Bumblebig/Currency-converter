@@ -55,7 +55,8 @@ export class ConverterComponent implements OnInit {
         },
       });
     } else {
-      this.showError('Amount must be greater than 0!');
+      this.showError('Enter a valid amount greater than 0!');
+      this.hideLoader();
     }
   }
 

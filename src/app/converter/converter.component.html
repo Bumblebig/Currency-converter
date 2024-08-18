@@ -1,4 +1,4 @@
-<form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)" id="form-container">
+<form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)">
 
     <div class="two fields">
         <div suiFormField>
@@ -20,8 +20,8 @@
         </div>
     </div>
 
-    <div suiFormField>
-        <button type="button" class="ui secondary button" id="toggle" (click)="toggleCurrencies()">
+    <div suiFormField id="toggle">
+        <button type="button" class="ui secondary button" (click)="toggleCurrencies()">
             <i class="exchange icon"></i>
         </button>
     </div>

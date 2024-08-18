@@ -4,3 +4,8 @@
   max-width: 800px !important;
   margin: 20px auto;
 }
+
+#toggle {
+  width: max-content;
+  margin: 0px auto;
+}
