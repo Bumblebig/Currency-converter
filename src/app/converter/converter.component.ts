@@ -23,6 +23,7 @@ export class ConverterComponent implements OnInit {
   amount = 0;
   convertedAmount: string | null = null;
   errorMessage: string | null = null;
+  currTypeError: boolean = false;
   loading: boolean = false;
 
   constructor(private currencyService: CurrencyService) { }
@@ -31,24 +32,30 @@ export class ConverterComponent implements OnInit {
 
 
   convert(form: NgForm): void {
-    this.hideError();
-    
+    // hide all errors
+    this.hideErrors();  
+
     if (this.isSameCurrency()) {
-      this.showError('Cannot convert the same currency!');
+      this.showTypeError()
       return;
     }
   
-    this.currencyService.getExchangeRates(this.fromCurrency, this.toCurrency).subscribe({
-      next: (data) => {
-        console.log('Conversion Rate:', data.conversion_rate);
-  
-        this.displayResult(data.conversion_rate);
-      },
-      error: () => {
-        this.showError('Error fetching rates, Please try again.');
-      },
-    });
+    if(form.valid && this.amount > 0){
+      this.currencyService.getExchangeRates(this.fromCurrency, this.toCurrency).subscribe({
+        next: (data) => {
+          console.log('Conversion Rate:', data.conversion_rate);
+          
+          this.displayResult(data.conversion_rate);
+        },
+        error: () => {
+          this.showError('Error fetching rates, Please try again.');
+        },
+      });
+    } else {
+      this.showError('Amount must be greater than 0!');
+    }
   }
+
   toggleCurrencies(): void {
     [this.fromCurrency, this.toCurrency] = [this.toCurrency, this.fromCurrency];
     this.convert(new NgForm([], []));
@@ -56,16 +63,6 @@ export class ConverterComponent implements OnInit {
 
   private isSameCurrency(): boolean {
     return this.fromCurrency === this.toCurrency;
-  }
-
-  private showError(message: string): void {
-    this.errorMessage = message;
-    this.convertedAmount = null;
-    this.stopLoading();
-  }
-
-  private hideError(): void {
-    this.errorMessage = null;
   }
 
   private displayResult(rate: number): void {
@@ -76,6 +73,21 @@ export class ConverterComponent implements OnInit {
 
   private startLoading(): void {
     this.loading = true;
+  }
+
+  private showError(message: string): void {
+    this.errorMessage = message;
+    this.convertedAmount = null;
+    this.stopLoading();
+  }
+
+  private showTypeError(): void {
+    this.currTypeError = true;
+  }
+
+  private hideErrors(): void {
+    this.currTypeError = false;
+    this.errorMessage = null;
   }
 
   private stopLoading(): void {

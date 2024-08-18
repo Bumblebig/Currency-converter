@@ -5,14 +5,21 @@
             <label for="from">From:</label>
             <sui-select id="from" suiPlaceholder="Select a currency" name="from" [suiOptions]="currencies" ngModel
                 [(ngModel)]="fromCurrency" required></sui-select>
+            <div class="ui large pointing red basic label" *ngIf="currTypeError">
+                Cannot convert the same currency!
+            </div>
         </div>
 
         <div suiFormField>
             <label for="to">To:</label>
             <sui-select id="to" suiPlaceholder="Select a currency" name="to" [suiOptions]="currencies" ngModel
                 [(ngModel)]="toCurrency" required></sui-select>
+            <div class="ui large pointing red basic label" *ngIf="currTypeError">
+                Cannot convert the same currency!
+            </div>
         </div>
     </div>
+
 
     <div suiFormField>
         <label for="amount">Amount:</label>
