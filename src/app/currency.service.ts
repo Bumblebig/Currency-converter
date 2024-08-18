@@ -15,10 +15,7 @@ export class CurrencyService {
     ).pipe(
       switchMap((response) => {
         if (response.ok) return response.json();
-        else {
-          console.error()
-          return of([]);
-        }
+        else return of([]);
       }),
       catchError((err) => {
         console.error('Fetch error:', err);
