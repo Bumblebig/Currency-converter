@@ -33,10 +33,12 @@ export class ConverterComponent implements OnInit {
 
   convert(form: NgForm): void {
     // hide all errors
-    this.hideErrors();  
+    this.hideErrors();
+    this.showLoader();  
 
     if (this.isSameCurrency()) {
-      this.showTypeError()
+      this.showTypeError();
+      this.hideLoader();
       return;
     }
   
@@ -49,6 +51,7 @@ export class ConverterComponent implements OnInit {
         },
         error: () => {
           this.showError('Error fetching rates, Please try again.');
+          this.hideLoader();
         },
       });
     } else {
@@ -58,7 +61,6 @@ export class ConverterComponent implements OnInit {
 
   toggleCurrencies(): void {
     [this.fromCurrency, this.toCurrency] = [this.toCurrency, this.fromCurrency];
-    this.convert(new NgForm([], []));
   }
 
   private isSameCurrency(): boolean {
@@ -66,19 +68,14 @@ export class ConverterComponent implements OnInit {
   }
 
   private displayResult(rate: number): void {
+    this.hideLoader();
     this.convertedAmount = `${this.amount} ${this.fromCurrency} is equal to ${this.amount * rate} ${this.toCurrency}`;
     this.errorMessage = null;
-    this.stopLoading();
-  }
-
-  private startLoading(): void {
-    this.loading = true;
   }
 
   private showError(message: string): void {
     this.errorMessage = message;
     this.convertedAmount = null;
-    this.stopLoading();
   }
 
   private showTypeError(): void {
@@ -88,9 +85,14 @@ export class ConverterComponent implements OnInit {
   private hideErrors(): void {
     this.currTypeError = false;
     this.errorMessage = null;
+    this.hideLoader();
   }
 
-  private stopLoading(): void {
+  private showLoader(): void {
+    this.loading = true;
+  }
+
+  private hideLoader(): void {
     this.loading = false;
   }
 }

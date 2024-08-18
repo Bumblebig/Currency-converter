@@ -1,4 +1,4 @@
-<form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)">
+<form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)" id="form-container">
 
     <div class="two fields">
         <div suiFormField>
@@ -20,6 +20,11 @@
         </div>
     </div>
 
+    <div suiFormField>
+        <button type="button" class="ui secondary button" id="toggle" (click)="toggleCurrencies()">
+            <i class="exchange icon"></i>
+        </button>
+    </div>
 
     <div suiFormField>
         <label for="amount">Amount:</label>
@@ -33,7 +38,7 @@
 
 
 <div *ngIf="convertedAmount" class="ui positive message">
-    <div class="header">Conversion Result</div>
+    <div class="header large">Conversion Result</div>
     <p>{{ convertedAmount }}</p>
 </div>
 
