@@ -1,5 +1,4 @@
 <form sui-form class="ui form" #currencyForm="ngForm" (ngSubmit)="convert(currencyForm)">
-
     <div class="two fields">
         <div suiFormField>
             <label for="from">From:</label>
@@ -28,14 +27,13 @@
 
     <div suiFormField>
         <label for="amount">Amount:</label>
-        <input type="number" id="amount" [(ngModel)]="amount" name="amount" required min="0"
-            placeholder="Enter amount" />
+        <input type="number" id="amount" [(ngModel)]="amount" name="amount" required min="0" placeholder="Enter amount"
+            (ngModelChange)="formValid()" />
     </div>
 
-    <button sui-button suiEmphasis="primary" (click)="convert(currencyForm)">Convert</button>
+    <button sui-button suiEmphasis="primary" [disabled]="!valid || loading" id="convert-btn">Convert</button>
     <div *ngIf="loading" class="ui active inline loader"></div>
 </form>
-
 
 <div *ngIf="convertedAmount" class="ui positive message">
     <div class="header large">Conversion Result</div>

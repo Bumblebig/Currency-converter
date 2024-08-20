@@ -25,28 +25,26 @@ export class ConverterComponent implements OnInit {
   errorMessage: string | null = null;
   currTypeError: boolean = false;
   loading: boolean = false;
+  valid: boolean = false;
 
-  constructor(private currencyService: CurrencyService) { }
+  constructor(private currencyService: CurrencyService) {}
 
-  ngOnInit(): void {  }
-
+  ngOnInit(): void {}
 
   convert(form: NgForm): void {
-    // hide all errors
     this.hideErrors();
-    this.showLoader();  
+    this.showLoader();
 
     if (this.isSameCurrency()) {
       this.showTypeError();
       this.hideLoader();
       return;
     }
-  
-    if(form.valid && this.amount > 0){
+
+    if (form.valid && this.amount > 0) {
       this.currencyService.getExchangeRates(this.fromCurrency, this.toCurrency).subscribe({
         next: (data) => {
           console.log('Conversion Rate:', data.conversion_rate);
-          
           this.displayResult(data.conversion_rate);
         },
         error: () => {
@@ -62,6 +60,11 @@ export class ConverterComponent implements OnInit {
 
   toggleCurrencies(): void {
     [this.fromCurrency, this.toCurrency] = [this.toCurrency, this.fromCurrency];
+    this.formValid();
+  }
+
+  formValid(): void {
+    this.valid = this.amount > 0;
   }
 
   private isSameCurrency(): boolean {
